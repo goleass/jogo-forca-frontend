@@ -22,15 +22,15 @@ const UserTable = () => {
     const handleShow = () => setShow(true);
 
     const onChangeUsername = e => {
-        setInputUsername(e.target.value)
+        setInputUsername(e.target.value.trim())
     }
 
     const onChangeUser = e => {
-        setInputUser(e.target.value)
+        setInputUser(e.target.value.trim())
     }
 
     const onChangePassword = e => {
-        setInputPassword(e.target.value)
+        setInputPassword(e.target.value.trim())
     }
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const UserTable = () => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm("Deseja realmente excluir?")) {
             axios.delete(`/users/remove-user/?id=${id}`).then(r => {
-                window.location.href = "http://localhost:3000/admin/usuarios"
+                window.location.href = "https://forca-jogo.herokuapp.com/admin/usuarios"
             }).catch(e => console.log(e))
         }
     }

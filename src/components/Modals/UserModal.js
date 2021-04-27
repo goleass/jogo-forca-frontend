@@ -17,15 +17,15 @@ const UserModal = () => {
     const handleShow = () => setShow(true);
 
     const onChangeUsername = e => {
-        setInputUsername(e.target.value)
+        setInputUsername(e.target.value.trim())
     }
 
     const onChangeUser = e => {
-        setInputUser(e.target.value)
+        setInputUser(e.target.value.trim())
     }
 
     const onChangePassword = e => {
-        setInputPassword(e.target.value)
+        setInputPassword(e.target.value.trim())
     }
 
     const handleCreate = e => {
