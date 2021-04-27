@@ -1,9 +1,8 @@
 import axios from 'axios'
 
-const baseURL = process.env.JOGO_FORCA_API || 'http://localhost:7000'
+let baseURL = process.env.JOGO_FORCA_API || 'http://localhost:7000'
 
-console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-console.log(baseURL)
+console.log(process.env.JOGO_FORCA_API)
 
 export default axios.create({
     baseURL: baseURL
