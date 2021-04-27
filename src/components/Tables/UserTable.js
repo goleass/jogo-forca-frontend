@@ -64,7 +64,7 @@ const UserTable = () => {
         }
 
         axios.put("/users/edit-user/?id="+inputCodUser, data).then(r => {
-            window.location.href="http://localhost:3000/admin/usuarios"
+            window.location.href="https://forca-jogo.herokuapp.com/admin/usuarios"
         }).catch(e => console.log(e))
     }
 

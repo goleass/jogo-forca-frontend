@@ -39,11 +39,10 @@ const UserModal = () => {
             "senha": inputPassword
         }
 
-        axios.post('new-user', data).then(r => {
-            window.location.href="http://localhost:3000/admin/usuarios"
+        axios.post('/users/new-user', data).then(r => {
+            window.location.href="https://forca-jogo.herokuapp.com/admin/usuarios"
         }).catch(e => console.log(e))
     }
-
 
     return (
         <>
