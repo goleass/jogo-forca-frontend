@@ -6,22 +6,6 @@ import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const userDefault =
-    [
-        {
-            "pk_cod_usuario": 24,
-            "nome_usuario": "Leonardo Gomes Assunção",
-            "usuario": "leonardo.assuncao",
-            "senha": "123546"
-        },
-        {
-            "pk_cod_usuario": 25,
-            "nome_usuario": "Lucas Silva Rocha",
-            "usuario": "lucas.silva",
-            "senha": "654321"
-        }
-    ]
-
 const UserTable = () => {
 
     const [users, setUsers] = useState([]);
@@ -41,8 +25,6 @@ const UserTable = () => {
         setInputUsername(e.target.value)
     }
 
-
-
     const onChangeUser = e => {
         setInputUser(e.target.value)
     }
@@ -56,27 +38,15 @@ const UserTable = () => {
     }, [])
 
     const getUsers = () => {
-        axios.get('').then(r => {
+        axios.get('/users').then(r => {
             setUsers(r.data)
         })
-    }
-
-    const editUser = data => {
-        const { pk_cod_usuario, inputUsername, inputUser, inputPassword } = data
-
-        if (!inputUsername || !inputUser || !inputPassword) return
-
-        const dataRequest = { inputUsername, inputUser, inputPassword }
-
-        axios.post(`edit-user/?id=${pk_cod_usuario}`, dataRequest).then(r => {
-            window.location.href="http://localhost:3000/admin/usuarios"
-        }).catch(e => console.log(e))
     }
 
     const deleteUser = id => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm("Deseja realmente excluir?")) {
-            axios.delete(`remove-user/?id=${id}`).then(r => {
+            axios.delete(`/users/remove-user/?id=${id}`).then(r => {
                 window.location.href = "http://localhost:3000/admin/usuarios"
             }).catch(e => console.log(e))
         }
@@ -93,7 +63,7 @@ const UserTable = () => {
             "senha": inputPassword
         }
 
-        axios.put("edit-user/?id="+inputCodUser, data).then(r => {
+        axios.put("/users/edit-user/?id="+inputCodUser, data).then(r => {
             window.location.href="http://localhost:3000/admin/usuarios"
         }).catch(e => console.log(e))
     }
