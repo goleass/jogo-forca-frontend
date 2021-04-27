@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-let baseURL = process.env.JOGO_FORCA_API || 'http://localhost:7000'
-
-console.log(process.env.JOGO_FORCA_API)
+let baseURL = 'https://jogo-forca-backend.herokuapp.com'
 
 export default axios.create({
     baseURL: baseURL
