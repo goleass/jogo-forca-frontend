@@ -7,7 +7,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
-const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'http://localhost:3000'
+const base = 'https://forca-jogo.herokuapp.com'
 
 document.addEventListener("keydown", function(e){
 	if (e.ctrlKey && e.altKey && e.keyCode==123){
