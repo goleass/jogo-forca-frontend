@@ -1,0 +1,16 @@
+.jogo-container-ranking{
+    margin-top: 20px;
+    background-color: #000411;
+    width: 40vw;
+    height: 80vh;
+    padding: 15px;
+    padding-left: 15px;
+}
+.table-title-ranking {
+    color: cornsilk;
+    text-align: center;
+}
+
+.table-ranking-item {
+    color: cornsilk;
+}
