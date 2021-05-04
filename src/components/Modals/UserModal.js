@@ -4,6 +4,8 @@ import { Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
+const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'http://localhost:3000'
+
 const UserModal = () => {
     const [show, setShow] = useState(false);
     const [inputUsername, setInputUsername] = useState();
@@ -40,7 +42,7 @@ const UserModal = () => {
         }
 
         axios.post('/users/new-user', data).then(r => {
-            window.location.href="https://forca-jogo.herokuapp.com/admin/usuarios"
+            window.location.href=`${base}/admin/usuarios`
         }).catch(e => console.log(e))
     }
 

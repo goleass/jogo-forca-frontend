@@ -6,6 +6,8 @@ import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'http://localhost:3000'
+
 const UserTable = () => {
 
     const [users, setUsers] = useState([]);
@@ -47,7 +49,7 @@ const UserTable = () => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm("Deseja realmente excluir?")) {
             axios.delete(`/users/remove-user/?id=${id}`).then(r => {
-                window.location.href = "https://forca-jogo.herokuapp.com/admin/usuarios"
+                window.location.href = `${base}/admin/usuarios`
             }).catch(e => console.log(e))
         }
     }
@@ -64,7 +66,7 @@ const UserTable = () => {
         }
 
         axios.put("/users/edit-user/?id="+inputCodUser, data).then(r => {
-            window.location.href="https://forca-jogo.herokuapp.com/admin/usuarios"
+            window.location.href = `${base}/admin/usuarios`
         }).catch(e => console.log(e))
     }
 
