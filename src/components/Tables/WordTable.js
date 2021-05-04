@@ -6,7 +6,7 @@ import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const base = process.env.NODE_ENV === 'production' ? 'https://forca-jogo.herokuapp.com' : 'http://localhost:3000'
+const base = process.env.NODE_ENV === 'production' ? 'https://forca-jogo.herokuapp.com' : 'https://forca-jogo.herokuapp.com'
 
 const dificult = ['Fácil', 'Médio', 'Difícil']
 

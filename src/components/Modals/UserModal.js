@@ -4,7 +4,7 @@ import { Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
-const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'http://localhost:3000'
+const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'https://forca-jogo.herokuapp.com'
 
 const UserModal = () => {
     const [show, setShow] = useState(false);
