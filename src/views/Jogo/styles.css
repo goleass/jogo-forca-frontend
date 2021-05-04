@@ -1,0 +1,29 @@
+.container-jogo {
+    display: flex;
+    margin:  0 auto;
+}
+
+.jogo-container-ranking{
+    margin-top: 20px;
+    background-color: black;
+    width: 40vw;
+    height: 80vh;
+    padding: 15px;
+    padding-left: 15px;
+}
+
+.jogo-container-form {
+    background-color: blue;
+    width: 25vw;
+    margin-top: 20px;
+    margin-left: 35px;
+}
+
+.table-ranking-item {
+    color: cornsilk;
+}
+
+.table-title {
+    color: cornsilk;
+    text-align: center;
+}
