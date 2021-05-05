@@ -1,4 +1,14 @@
 .container-jogo {
     display: flex;
-    margin:  0 auto;
+    justify-content: center;
+}
+
+.black {
+    background-color: black;
+    width: 50%;
+    height: 50%;
+}
+
+.teste {
+    width: 50vw;
 }

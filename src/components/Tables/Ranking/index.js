@@ -26,7 +26,7 @@ const Ranking = () => {
                 <tbody>
                     {ranking && ranking.map((r, i) => {
                         return (
-                            <tr>
+                            <tr key={i}>
                                 <td className='table-ranking-item'>{i+1}</td>
                                 <td className='table-ranking-item'>{r.nome}</td>
                                 <td className='table-ranking-item'>{r.pontuacao}</td>
