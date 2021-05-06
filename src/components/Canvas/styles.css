@@ -58,6 +58,8 @@
     text-align: center;
     text-transform: uppercase;
     margin-bottom: 10px;
+    color: aliceblue;
+    font-weight: bold;
 }
 
 .input-letra:focus {
