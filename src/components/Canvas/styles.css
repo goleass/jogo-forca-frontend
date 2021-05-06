@@ -64,3 +64,13 @@
     box-shadow: 0 0 0 0;
     outline: 0;
 }
+
+.letra-que-aparece {
+    color: aliceblue;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.pontilhado-palavra {
+    text-align: center;
+}

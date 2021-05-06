@@ -8,7 +8,7 @@ import { useShowCanvasGame } from "../../context/ShowCanvasGame";
 
 const Jogo = () => {
     const { showCanvasGame, setShowCanvasGame } = useShowCanvasGame()
-    console.log(111)
+
     return (
         <Container className='container-jogo'>
             <Row className='teste' hidden={!showCanvasGame}><Jogar /></Row>

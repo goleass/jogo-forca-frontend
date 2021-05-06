@@ -57,7 +57,6 @@ const FormJogar = () => {
             </Form.Group>
 
             <Form.Group>
-                {console.log(showCanvasGame)}
                 <Button onClick={() => setShowCanvasGame(true)} variant="primary" disabled={!next} size="lg" block>Jogar</Button>
             </Form.Group>
         </div>
