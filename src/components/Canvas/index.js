@@ -46,7 +46,7 @@ const Canvas = () => {
         <Container className='container-canvas'>
             <Row className='canvas-header'>
                 <span className>Pontuação: 5</span>
-                <span className>Vidas: 5</span>
+                <span className>Vidas: {life}</span>
             </Row>
             <Row className='canvas-main'>
                 <div id='teste' className='desenhos'>
