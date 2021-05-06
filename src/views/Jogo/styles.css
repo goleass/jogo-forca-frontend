@@ -9,6 +9,7 @@
     height: 50%;
 }
 
-.teste {
-    width: 50vw;
+.desenhos {
+    display: flex;
+    justify-content: center;
 }

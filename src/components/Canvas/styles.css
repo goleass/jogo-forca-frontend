@@ -5,7 +5,7 @@
 
 .canvas-main {
     background-color: brown;
-    height: 60vh;
+    height: auto;
     padding: 10px;
     display: flex;
     flex-direction: column;
