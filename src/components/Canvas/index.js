@@ -54,14 +54,10 @@ const Canvas = () => {
     const jogar = () => {
         if (life > 0) { // verifica se tem vidas ainda
 
-            if (!isSent()) { // verifica se a letra não foi enviada
+            if (letter && letter!==' ' && !isSent()) { // verifica se a letra não foi enviada
              
-                const { result, newWord } = isRight()
-
-                if(result) { // verifica se a letra está na palavra
-                    console.log(word)
-                }
-                else setLife(life - 1)
+                const result = isRight()
+                if(!result) setLife(life - 1)
 
             }
             changeLetterStatus()
@@ -71,7 +67,7 @@ const Canvas = () => {
     const isRight = () => {
         let result = false
 
-        let newWord = word.splitWord.map(l => {
+        word.splitWord.map(l => {
             if(l.letter === letter){
                 l.show = true
                 result = true
@@ -79,7 +75,7 @@ const Canvas = () => {
             return l
         })
 
-        return {result, newWord}
+        return result
     }
 
     const handleLetter = e => {
