@@ -130,6 +130,7 @@ const Canvas = () => {
             newWord()
         }
         setLetter('')
+        isDead()
     }
 
     const newWord = () => {
@@ -160,6 +161,14 @@ const Canvas = () => {
             setLetter(e.target.value.toUpperCase().replace("[A-Z]+", ""))
         } else {
             setLetter('')
+        }
+    }
+
+    const isDead = () => {
+        console.log(life)
+        if(life == 0) {
+            alert("Você perdeu!")
+            window.location.href=`${base}`
         }
     }
 
