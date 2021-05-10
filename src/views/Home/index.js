@@ -6,7 +6,7 @@ function Home() {
     return (
         <>
             <Header />
-            Tela inicial, alguma imagem
+            {/* Tela inicial, alguma imagem */}
         </>
     )
 }

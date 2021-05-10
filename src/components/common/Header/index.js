@@ -9,13 +9,13 @@ function Header() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link><Link to='/admin'>Home</Link></Nav.Link>
+                        {/* <Nav.Link><Link to='/admin'>Home</Link></Nav.Link> */}
                         <Nav.Link><Link to='/admin/usuarios'>Usuários</Link></Nav.Link>
                         <Nav.Link><Link to='/admin/categorias'>Categorias</Link></Nav.Link>
                         <Nav.Link><Link to='/admin/palavras'>Palavras</Link></Nav.Link>
                     </Nav>
                     <Nav>
-                        <Button className='btn' >Sair</Button>
+                        {/* <Button className='btn' >Sair</Button> */}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
