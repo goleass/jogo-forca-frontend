@@ -7,11 +7,14 @@ import Jogar from '../../components/Canvas/index'
 import { useShowCanvasGame } from "../../context/ShowCanvasGame";
 
 const Jogo = () => {
-    const { showCanvasGame, setShowCanvasGame } = useShowCanvasGame()
+    const { 
+        showCanvasGame, 
+        setShowCanvasGame
+    } = useShowCanvasGame()
 
     return (
         <Container className='container-jogo'>
-            <Row className='teste' hidden={!showCanvasGame}><Jogar /></Row>
+            <Row>{showCanvasGame && <Jogar />}</Row>
             <Row hidden={showCanvasGame}><Ranking /></Row>
             <Row hidden={showCanvasGame}><FormJogar /></Row>
         </Container>

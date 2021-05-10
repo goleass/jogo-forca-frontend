@@ -11,7 +11,14 @@ const FormJogar = () => {
     const [dificultInput, setDificultInput] = useState(null)
     const [categories, setCategories] = useState([])
     const [next, setNext] = useState(false)
-    const { showCanvasGame, setShowCanvasGame } = useShowCanvasGame()
+    const { 
+        showCanvasGame, 
+        setShowCanvasGame,
+        category,
+        setCategory,
+        dificult,
+        setDificult
+    } = useShowCanvasGame()
 
     const getCategories = () => {
         axios.get('/categories').then(r => {
@@ -57,7 +64,11 @@ const FormJogar = () => {
             </Form.Group>
 
             <Form.Group>
-                <Button onClick={() => setShowCanvasGame(true)} variant="primary" disabled={!next} size="lg" block>Jogar</Button>
+                <Button onClick={() => {
+                    setShowCanvasGame(true)
+                    setCategory(categoryInput)
+                    setDificult(dificultInput)
+                }} variant="primary" disabled={!next} size="lg" block>Jogar</Button>
             </Form.Group>
         </div>
     )
