@@ -29,7 +29,7 @@ const wordTest = {
     ]
 }
 
-const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'https://forca-jogo.herokuapp.com'
+const base = process.env.NODE_ENV === 'production' ? 'https://forca-jogo.herokuapp.com' : 'https://forca-jogo.herokuapp.com'
 
 
 const Canvas = () => {
@@ -46,6 +46,22 @@ const Canvas = () => {
         getWord()
     }, [])
 
+    useEffect(() => {
+        if(isWinner()){
+            setScore(score + ( dificult * 100 ))
+        }
+        else if (isDead()){
+            let sum = 0
+            word.splitWord.forEach(w => {
+                if(w.show) sum = sum + 5
+            })
+
+            setScore(score + sum)
+
+            setShow(true)
+        }
+    }, [word])
+
     const split_word = word => {
         let split = []
         for (let index = 0; index < word.length; index++) {
@@ -53,6 +69,8 @@ const Canvas = () => {
         }
         return split
     }
+
+
 
     const getWord = () => {
         axios.get(`/words/get-word/?dificuldade=${dificult}&categoria=${category}`)
@@ -94,7 +112,7 @@ const Canvas = () => {
 
     const backAndSetRanking = () => {
         newRanking()
-        window.location.href=`${base}`
+        window.location.href = `${base}`
     }
 
     const newRanking = () => {
@@ -107,7 +125,7 @@ const Canvas = () => {
         }
 
         axios.post('/ranking/new-ranking', data).then(r => {
-            
+
         }).catch(e => console.log(e))
     }
 
@@ -118,19 +136,18 @@ const Canvas = () => {
             if (letter && letter !== ' ' && !isSent()) { // verifica se a letra não foi enviada
 
                 const result = isRight()
-                if (!result) setLife(life - 1)
-                if (result) setScore(score + (1 * dificult))
+                if (!result) {
+                    setLife(life - 1)
+                }
 
             }
             changeLetterStatus()
         }
 
         if (isWinner()) {
-            setShow(true)
             newWord()
         }
         setLetter('')
-        isDead()
     }
 
     const newWord = () => {
@@ -141,7 +158,7 @@ const Canvas = () => {
     const isRight = () => {
         let result = false
 
-        word.splitWord.map(l => {
+        const w = word.splitWord.map(l => {
             if (l.letter.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase() ===
                 letter.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase()) {
                 l.show = true
@@ -149,6 +166,8 @@ const Canvas = () => {
             }
             return l
         })
+
+        setWord({ word: word.word, splitWord: w })
 
         return result
     }
@@ -165,11 +184,11 @@ const Canvas = () => {
     }
 
     const isDead = () => {
-        console.log(life)
-        if(life == 0) {
-            alert("Você perdeu!")
-            window.location.href=`${base}`
+        if (life == 0) {
+            return true
         }
+
+        return false
     }
 
     const isWinner = () => {
@@ -222,7 +241,7 @@ const Canvas = () => {
             </Row>
             <Modal backdrop="static" show={show}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Você acertou a palavra!</Modal.Title>
+                    <Modal.Title>Você perdeu !</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -232,8 +251,8 @@ const Canvas = () => {
                         </Form.Group>
 
                         <Form.Group>
-                            <Button onClick={() => backAndSetRanking()} disabled={!nameRanking && true} className='mr-2'>Voltar para o início</Button>
-                            <Button onClick={() => handleClose()}>Continuar jogando</Button>
+                            <Button onClick={() => window.location.href = `${base}`} variant="secondary" className='mr-2'>Sair</Button>
+                            <Button onClick={() => backAndSetRanking()}>Salvar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
