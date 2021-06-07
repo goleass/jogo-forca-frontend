@@ -48,7 +48,6 @@
 }
 
 .input-letra{
-    width: 30%;
     background-color: brown;
     border-width: 3px;
     border-style: solid;
@@ -60,6 +59,7 @@
     margin-bottom: 10px;
     color: aliceblue;
     font-weight: bold;
+    width: auto;
 }
 
 .input-letra:focus {

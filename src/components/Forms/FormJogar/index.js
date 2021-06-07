@@ -36,7 +36,7 @@ const FormJogar = () => {
     }, [categoryInput, dificultInput])
 
     return (
-        <div className='jogo-container-form'>
+        <div className='jogo-container-form p-2 mt-lg-5'>
             <Form.Group>
                 <h1 className='table-title-form-play'>FORCA</h1>
             </Form.Group>

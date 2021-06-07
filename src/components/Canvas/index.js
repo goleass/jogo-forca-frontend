@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Form, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
@@ -47,13 +47,13 @@ const Canvas = () => {
     }, [])
 
     useEffect(() => {
-        if(isWinner()){
-            setScore(score + ( dificult * 100 ))
+        if (isWinner()) {
+            setScore(score + (dificult * 100))
         }
-        else if (isDead()){
+        else if (isDead()) {
             let sum = 0
             word.splitWord.forEach(w => {
-                if(w.show) sum = sum + 5
+                if (w.show) sum = sum + 5
             })
 
             setScore(score + sum)
@@ -70,17 +70,24 @@ const Canvas = () => {
         return split
     }
 
-
-
     const getWord = () => {
         axios.get(`/words/get-word/?dificuldade=${dificult}&categoria=${category}`)
             .then(r => {
                 const w = {
                     word: r.data,
-                    splitWord: split_word(r.data).map(v => ({ letter: v, show: false }))
+                    splitWord: split_word(r.data).map(v => {
+                        console.log(`letra: ${v}`)
+                        if (v == ' ' || v == '-') {
+                            return { letter: v, show: true }
+                        } else {
+                            return { letter: v, show: false }
+                        }
+
+                    })
                 }
 
                 setWord(w)
+                console.log(word)
             })
     }
 
@@ -211,26 +218,34 @@ const Canvas = () => {
                 <span className>Vidas: {life}</span>
             </Row>
             <Row className='canvas-main'>
-                <div id='teste' className='desenhos'>
-                    {(life === 0) && <img width='200' src={imagem0} />}
-                    {(life === 1) && <img width='200' src={imagem1} />}
-                    {(life === 2) && <img width='200' src={imagem2} />}
-                    {(life === 3) && <img width='200' src={imagem3} />}
-                    {(life === 4) && <img width='200' src={imagem4} />}
-                    {(life === 5) && <img width='200' src={imagem5} />}
-                    {(life === 6) && <img width='200' src={imagem6} />}
-                </div>
-                <div className='pontilhado-palavra'>
-                    {word && word.splitWord.map(l => {
-                        if (l.show) {
-                            return (<span className='letra-que-aparece'>{l.letter}</span>)
-                        } else return (<span className='letra-que-aparece'> _ </span>)
-                    })}
-                </div>
-                <div className='div-input-letra'>
-                    <input className='input-letra' placeholder='Digite uma letra' onChange={handleLetter} value={letter} />
-                    <Button onClick={() => jogar()}>Enviar</Button>
-                </div>
+                <Col>
+
+                    <Row className="justify-content-center"><div id='teste' className='desenhos'>
+                        {(life === 0) && <img width='200' src={imagem0} />}
+                        {(life === 1) && <img width='200' src={imagem1} />}
+                        {(life === 2) && <img width='200' src={imagem2} />}
+                        {(life === 3) && <img width='200' src={imagem3} />}
+                        {(life === 4) && <img width='200' src={imagem4} />}
+                        {(life === 5) && <img width='200' src={imagem5} />}
+                        {(life === 6) && <img width='200' src={imagem6} />}
+                    </div>
+                    </Row>
+                    <Row className="justify-content-center"><div className='pontilhado-palavra'>
+                        {word && word.splitWord.map(l => {
+                            if (l.show) {
+                                return (<span className='letra-que-aparece'>{l.letter}</span>)
+                            } else return (<span className='letra-que-aparece'>&nbsp;_&nbsp;</span>)
+                        })}
+                    </div>
+                    </Row>
+                    <Row className="justify-content-center">  <div className='div-input-letra'>
+                        <input className='input-letra' placeholder='Digite uma letra' onChange={handleLetter} value={letter} />
+                        <Button onClick={() => jogar()}>Enviar</Button>
+                    </div>
+                    </Row>
+
+
+                </Col>
             </Row>
             <Row className='canvas-footer'>
                 {letters && letters.map((l, i) => {

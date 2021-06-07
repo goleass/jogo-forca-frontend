@@ -9,7 +9,6 @@ function App() {
     <>
       <BrowserRouter>
         <Routes />
-        {/* <Footer /> */}
       </BrowserRouter>
     </>
   )
