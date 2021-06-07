@@ -1,3 +1,3 @@
 export const isAutenticated = () => {
-    return true
+    return true && localStorage.getItem('app-token')
 }
