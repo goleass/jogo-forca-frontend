@@ -15,6 +15,10 @@ const UserModal = () => {
     const [textAlert, setTextAlert] = useState("erro");
 
     const handleClose = () => {
+        setShowAlert(false)
+        setInputPassword("")
+        setInputUser("")
+        setInputUsername("")
         setShow(false)
     }
 

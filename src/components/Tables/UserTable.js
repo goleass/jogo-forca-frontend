@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Container, Row, Table,Button, Form, Modal } from 'react-bootstrap';
+import { Container, Row, Table,Button, Form, Modal, Alert } from 'react-bootstrap';
 import UserModal from '../Modals/UserModal';  
 import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -16,8 +16,14 @@ const UserTable = () => {
     const [inputUser, setInputUser] = useState();
     const [inputPassword, setInputPassword] = useState();
     const [inputCodUser, setInputCodUser] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const handleClose = () => {
+        setShowAlert(false)
+        setInputPassword("")
+        setInputUser("")
+        setInputUsername("")
         setShow(false)
     }
 
@@ -54,14 +60,22 @@ const UserTable = () => {
         }
     }
 
-    const handleSaveEdit = e => {
+    const handleSaveEdit = async function(e) {
         e.preventDefault()
         
         if (!inputUsername || !inputUser || !inputPassword) return
         
+        const user = await axios.get(`/users/get-user-name/?usuario=${inputUser}`)
+        // console.log(word.data.word.nome_palavra, inputCodWord);
+        if(user.data.user && user.data.user.nome_usuario && (user.data.user.pk_cod_usuario!=inputCodUser)){
+            setTextAlert("Usuário já cadastrado.")
+            setShowAlert(true)
+            return
+        }
+
         const data = {
-            "nome_usuario": inputUsername,
-            "usuario": inputUser,
+            "nome_usuario": inputUsername.trim(),
+            "usuario": inputUser.trim(),
             "senha": inputPassword
         }
 
@@ -78,6 +92,7 @@ const UserTable = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasiUsername">
                             <Form.Label>Nome do usuário</Form.Label>
                             <Form.Control value={inputUsername} onChange={onChangeUsername} required type="text" placeholder="Leonardo Gomes Assunção" />
