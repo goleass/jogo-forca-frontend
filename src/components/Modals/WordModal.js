@@ -27,6 +27,8 @@ const WordModal = () => {
 
     const handleClose = (e) => {
         setShowAlert(false)
+        setInputCodCategory("")
+        setInputDificult("")
         setShow(false)
     }
 

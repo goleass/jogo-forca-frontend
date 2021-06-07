@@ -34,6 +34,8 @@ const WordTable = () => {
 
     const handleClose = () => {
         setShowAlert(false)
+        setInputCodCategory("")
+        setInputDificult("")
         setShow(false)
     }
 

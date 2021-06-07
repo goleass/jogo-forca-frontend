@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
@@ -11,6 +11,8 @@ const UserModal = () => {
     const [inputUsername, setInputUsername] = useState();
     const [inputUser, setInputUser] = useState();
     const [inputPassword, setInputPassword] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const handleClose = () => {
         setShow(false)
@@ -30,14 +32,24 @@ const UserModal = () => {
         setInputPassword(e.target.value.trim())
     }
 
-    const handleCreate = e => {
+    const handleCreate = async function(e) {
         e.preventDefault()
 
         if (!inputUsername || !inputUser || !inputPassword) return
 
+        const user = await axios.get(`/users/get-user-name/?usuario=${inputUser.trim()}`)
+
+        if(user.data.user && user.data.user.nome_usuario){
+            setTextAlert("Usuário já cadastrado.")
+            setShowAlert(true)
+            return
+        }
+
+        return
+
         const data = {
-            "nome_usuario": inputUsername,
-            "usuario": inputUser,
+            "nome_usuario": inputUsername.trim(),
+            "usuario": inputUser.trim(),
             "senha": inputPassword
         }
 
@@ -56,6 +68,7 @@ const UserModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>    
                         <Form.Group controlId="formBasiUsername">
                             <Form.Label>Nome do usuário</Form.Label>
                             <Form.Control onChange={onChangeUsername} required type="text" placeholder="Leonardo Gomes Assunção" />
@@ -73,7 +86,7 @@ const UserModal = () => {
 
                         <Form.Group controlId="formBasicButtonSend">
                             <Button onClick={handleClose} variant="secondary" className='mr-1' >Cancelar</Button>
-                            <Button onClick={handleCreate} variant="primary">Criar</Button>
+                            <Button onClick={handleCreate} disabled={!inputUsername || !inputPassword || !inputUser} variant="primary">Criar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
