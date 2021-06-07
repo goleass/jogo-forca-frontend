@@ -7,7 +7,6 @@ import './styles.css'
 
 const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'https://forca-jogo.herokuapp.com'
 
-
 const Login = () => {
     const [user, setUser] = useState();
     const [pass, setPass] = useState();
