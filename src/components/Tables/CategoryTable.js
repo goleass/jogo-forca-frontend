@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Container, Row, Table, Button, Form, Modal } from 'react-bootstrap';
+import { Container, Row, Table, Button, Form, Modal, Alert } from 'react-bootstrap';
 import UserModal from '../Modals/CategoryModal';
 import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -14,15 +14,18 @@ const CategoryTable = () => {
     const [inputCategory, setInputcategory] = useState([]);
     const [inputCodCategory, setInputCodcategory] = useState([]);
     const [show, setShow] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const handleClose = () => {
+        setShowAlert(false)
         setShow(false)
     }
 
     const handleShow = () => setShow(true);
 
     const onChangeCategory = e => {
-        setInputcategory(e.target.value.trim())
+        setInputcategory(e.target.value.toUpperCase())
     }
 
     useEffect(() => {
@@ -44,13 +47,21 @@ const CategoryTable = () => {
         }
     }
 
-    const handleSaveEdit = e => {
+    const handleSaveEdit = async function(e) {
         e.preventDefault()
 
         if (!inputCategory) return
 
+        const category = await axios.get(`/categories/get-category-name/?nome_categoria=${inputCategory.trim()}`)
+        console.log(category.data.category);
+        if(category.data.category && category.data.category.nome_categoria && (category.data.category.pk_cod_categoria!=inputCodCategory)){
+            setTextAlert("Categoria já cadastrada.")
+            setShowAlert(true)
+            return
+        }
+
         const data = {
-            "nome_categoria": inputCategory
+            "nome_categoria": inputCategory.trim()
         }
 
         axios.put("/categories/edit-category/?id=" + inputCodCategory, data).then(r => {
@@ -66,14 +77,15 @@ const CategoryTable = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasiUsername">
                             <Form.Label>Nome do Categoria</Form.Label>
-                            <Form.Control value={inputCategory} onChange={onChangeCategory} required type="text" placeholder="Comidas" />
+                            <Form.Control onChange={onChangeCategory} value={inputCategory} required="true" type="text" placeholder="Comidas" />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicButtonSend">
                             <Button onClick={handleClose} variant="secondary" className='mr-1' >Cancelar</Button>
-                            <Button onClick={handleSaveEdit} variant="primary">Salvar</Button>
+                            <Button onClick={handleSaveEdit} disabled={!(inputCategory && inputCategory.toString().trim())} variant="primary">Salvar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

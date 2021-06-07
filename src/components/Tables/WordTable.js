@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Container, Row, Table, Button, Form, Modal } from 'react-bootstrap';
+import { Container, Row, Table, Button, Form, Modal, Alert } from 'react-bootstrap';
 import WordModal from '../Modals/WordModal';
 import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,8 @@ const WordTable = () => {
     const [categories, setCategories] = useState();
     const [inputCodCategory, setInputCodCategory] = useState();
     const [inputDificult, setInputDificult] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const getCategories = () => {
         axios.get('/categories').then(r => {
@@ -30,15 +32,21 @@ const WordTable = () => {
         setInputDificult(e.target.value)
     }
 
-
     const handleClose = () => {
+        setShowAlert(false)
         setShow(false)
     }
 
     const handleShow = () => setShow(true);
 
     const onChangeWord = e => {
-        setInputWord(e.target.value.trim())
+        // setInputWord(e.target.value.toUpperCase())
+        var filter_nome = /^([A-Z-_]|\s+)+$/;
+
+        // setLetter(e.target.value.toUpperCase())
+        if (filter_nome.test(e.target.value.toUpperCase())) {
+            setInputWord(e.target.value.toUpperCase().replace("[A-Z]+", ""))
+        }
     }
 
     const onChangeCodCategoria = e => {
@@ -65,13 +73,21 @@ const WordTable = () => {
         }
     }
 
-    const handleSaveEdit = e => {
+    const handleSaveEdit = async function(e) {
         e.preventDefault()
 
         if (!inputWord || !inputCodCategory || !inputCodWord || !inputDificult || inputDificult==0 || inputCodCategory==0) return
     
+        const word = await axios.get(`/words/get-word-name/?nome_palavra=${inputWord}`)
+        // console.log(word.data.word.nome_palavra, inputCodWord);
+        if(word.data.word && word.data.word.nome_palavra && (word.data.word.pk_cod_palavra!=inputCodWord)){
+            setTextAlert("Palavra já cadastrada.")
+            setShowAlert(true)
+            return
+        }
+
         const data = {
-            "nome_palavra": inputWord,
+            "nome_palavra": inputWord.toString().trim(),
             "fk_cod_categoria": inputCodCategory,
             "dificuldade": inputDificult,
         }
@@ -89,6 +105,7 @@ const WordTable = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasiWordEdit">
                             <Form.Label>Nome do Palavra</Form.Label>
                             <Form.Control value={inputWord} onChange={onChangeWord} required type="text" placeholder="Comidas" />
@@ -99,7 +116,12 @@ const WordTable = () => {
                             <Form.Control as="select" size="small" onChange={onChangeCodCategoria}>
                                 <option value={0}>Selecione...</ option>
                                 {categories && categories.map(category => {
-                                    return (<option value={category.pk_cod_categoria} key={category.pk_cod_categoria}>{category.nome_categoria}</option>)
+                                    return (
+                                        <option 
+                                            value={category.pk_cod_categoria} 
+                                            key={category.pk_cod_categoria}>
+                                                {category.nome_categoria}
+                                        </option>)
                                 })}
                             </Form.Control>
                         </Form.Group>
@@ -116,7 +138,7 @@ const WordTable = () => {
 
                         <Form.Group controlId="formBasicButtonSend11">
                             <Button onClick={handleClose} variant="secondary" className='mr-1' >Cancelar</Button>
-                            <Button onClick={handleSaveEdit} variant="primary">Salvar</Button>
+                            <Button onClick={handleSaveEdit} disabled={!(inputWord && inputWord.toString().trim()) || inputCodCategory==0 || !inputCodCategory || inputDificult==0 || !inputDificult} variant="primary">Salvar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

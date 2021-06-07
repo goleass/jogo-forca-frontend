@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Alert,Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
@@ -12,6 +12,8 @@ const WordModal = () => {
     const [inputWord, setInputWord] = useState();
     const [inputCodCategory, setInputCodCategory] = useState();
     const [inputDificult, setInputDificult] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const getCategories = () => {
         axios.get('/categories').then(r => {
@@ -24,15 +26,23 @@ const WordModal = () => {
     }, [])
 
     const handleClose = (e) => {
+        setShowAlert(false)
         setShow(false)
     }
 
     const handleShow = (e) => {
         setShow(true);
+        setInputWord('')
     }
 
     const onChangeWord = e => {
-        setInputWord(e.target.value.trim())
+        // setInputWord(e.target.value.toUpperCase())
+        var filter_nome = /^([A-Z-_]|\s+)+$/;
+
+        // setLetter(e.target.value.toUpperCase())
+        if (filter_nome.test(e.target.value.toUpperCase())) {
+            setInputWord(e.target.value.toUpperCase().replace("[A-Z]+", ""))
+        }
     }
 
     const onChangeCodCategoria = e => {
@@ -43,13 +53,22 @@ const WordModal = () => {
         setInputDificult(e.target.value)
     }
 
-    const handleCreate = e => {
-        e.preventDefault()  
+    const handleCreate = async function(e) {
+        e.preventDefault()
+        if (!inputWord || !inputDificult || !inputCodCategory || inputCodCategory==0 || inputDificult==0) {
+            return
+        }
 
-        if (!inputWord || !inputDificult || !inputCodCategory || inputCodCategory==0 || inputDificult==0) return
+        const word = await axios.get(`/words/get-word-name/?nome_palavra=${inputWord}`)
+
+        if(word.data.word && word.data.word.nome_palavra){
+            setTextAlert("Palavra já cadastrada.")
+            setShowAlert(true)
+            return
+        }
 
         const data = {
-            "nome_palavra": inputWord,
+            "nome_palavra": inputWord.trim(),
             "fk_cod_categoria": inputCodCategory,
             "dificuldade": inputDificult,
         }
@@ -69,9 +88,10 @@ const WordModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasicWord">
                             <Form.Label>Nome da Palavra</Form.Label>
-                            <Form.Control onChange={onChangeWord} required type="text" placeholder="Cachorro" />
+                            <Form.Control onChange={onChangeWord} value={inputWord} required type="text" placeholder="Cachorro" />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicCategory">
@@ -79,7 +99,12 @@ const WordModal = () => {
                             <Form.Control as="select" size="small" onChange={onChangeCodCategoria}>
                                 <option value={0}>Selecione...</ option>
                                 {categories && categories.map(category => {
-                                    return (<option value={category.pk_cod_categoria} key={category.pk_cod_categoria}>{category.nome_categoria}</option>)
+                                    return (
+                                        <option 
+                                            value={category.pk_cod_categoria} 
+                                            key={category.pk_cod_categoria}>
+                                                {category.nome_categoria}
+                                        </option>)
                                 })}
                             </Form.Control>
                         </Form.Group>
@@ -95,8 +120,9 @@ const WordModal = () => {
                         </Form.Group>
 
                         <Form.Group controlId="formBasicButtonSend10">
+
                             <Button onClick={handleClose} variant="secondary" className='mr-1' >Cancelar</Button>
-                            <Button onClick={handleCreate} variant="primary">Criar</Button>
+                            <Button onClick={handleCreate} disabled={!(inputWord && inputWord.trim()) || inputCodCategory==0 || !inputCodCategory || inputDificult==0 || !inputDificult} variant="primary">Criar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

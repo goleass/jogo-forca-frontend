@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Alert,Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
@@ -9,24 +9,38 @@ const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.c
 const CategoryModal = () => {
     const [show, setShow] = useState(false);
     const [inputCategory, setInputCategory] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [textAlert, setTextAlert] = useState("erro");
 
     const handleClose = () => {
+        setShowAlert(false)
         setShow(false)
     }
 
-    const handleShow = () => setShow(true);
-
-    const onChangeCategory = e => {
-        setInputCategory(e.target.value.trim())
+    const handleShow = () => {
+        setInputCategory('')
+        setShow(true)
     }
 
-    const handleCreate = e => {
+    const onChangeCategory = e => {
+        setInputCategory(e.target.value.toUpperCase())
+    }
+
+    const handleCreate = async function(e) {
         e.preventDefault()
 
         if (!inputCategory) return
 
+        const category = await axios.get(`/categories/get-category-name/?nome_categoria=${inputCategory.trim()}`)
+
+        if(category.data.category && category.data.category.nome_categoria){
+            setTextAlert("Categoria já cadastrada.")
+            setShowAlert(true)
+            return
+        }
+
         const data = {
-            "nome_categoria": inputCategory
+            "nome_categoria": inputCategory.trim()
         }
 
         axios.post('/categories/new-category', data).then(r => {
@@ -44,14 +58,15 @@ const CategoryModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasiUsername">
                             <Form.Label>Nome da Categoria</Form.Label>
-                            <Form.Control onChange={onChangeCategory} required type="text" placeholder="Comidas" />
+                            <Form.Control onChange={onChangeCategory} value={inputCategory} required type="text" placeholder="Comidas" />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicButtonSend">
                             <Button onClick={handleClose} variant="secondary" className='mr-1' >Cancelar</Button>
-                            <Button onClick={handleCreate} variant="primary">Criar</Button>
+                            <Button onClick={handleCreate} disabled={!(inputCategory && inputCategory.toString().trim())} variant="primary">Criar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
