@@ -44,6 +44,7 @@ const FormJogar = () => {
                 <Form.Label>Categoria</Form.Label>
                 <Form.Control as="select" size="small" onChange={e => setCategoryInput(e.target.value)}>
                     <option value={0}>Selecione...</ option>
+                    <option value="-1">TODAS</ option>
                     {categories && categories.map(c => {
                         return (
                             <option key={c.pk_cod_categoria} value={c.pk_cod_categoria} >{c.nome_categoria}</ option>
