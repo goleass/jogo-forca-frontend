@@ -49,8 +49,6 @@ const UserModal = () => {
             return
         }
 
-        return
-
         const data = {
             "nome_usuario": inputUsername.trim(),
             "usuario": inputUser.trim(),
