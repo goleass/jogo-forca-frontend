@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Container, Row, Table,Button, Form, Modal, Alert } from 'react-bootstrap';
-import UserModal from '../Modals/UserModal';  
+import { Container, Row, Table, Button, Form, Modal, Alert } from 'react-bootstrap';
+import UserModal from '../Modals/UserModal';
 import axios from '../../api/axios'
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'https://forca-jogo.herokuapp.com'
+const base = process.env.NODE_ENV === 'production' ? 'https://forca-jogo.herokuapp.com' : 'https://forca-jogo.herokuapp.com'
 
 const UserTable = () => {
 
@@ -34,7 +34,13 @@ const UserTable = () => {
     }
 
     const onChangeUser = e => {
-        setInputUser(e.target.value.trim())
+        // setInputWord(e.target.value.toUpperCase())
+        var filter_nome = /^([A-Z\d.]|\s+)+$/;
+
+        // setLetter(e.target.value.toUpperCase())
+        if (filter_nome.test(e.target.value.toUpperCase())) {
+            setInputUser(e.target.value.toLowerCase().replace("[A-Zd.]+", "").trim())
+        }
     }
 
     const onChangePassword = e => {
@@ -60,14 +66,14 @@ const UserTable = () => {
         }
     }
 
-    const handleSaveEdit = async function(e) {
+    const handleSaveEdit = async function (e) {
         e.preventDefault()
-        
+
         if (!inputUsername || !inputUser || !inputPassword) return
-        
+
         const user = await axios.get(`/users/get-user-name/?usuario=${inputUser}`)
         // console.log(word.data.word.nome_palavra, inputCodWord);
-        if(user.data.user && user.data.user.nome_usuario && (user.data.user.pk_cod_usuario!=inputCodUser)){
+        if (user.data.user && user.data.user.nome_usuario && (user.data.user.pk_cod_usuario != inputCodUser)) {
             setTextAlert("Usuário já cadastrado.")
             setShowAlert(true)
             return
@@ -79,14 +85,14 @@ const UserTable = () => {
             "senha": inputPassword
         }
 
-        axios.put("/users/edit-user/?id="+inputCodUser, data).then(r => {
+        axios.put("/users/edit-user/?id=" + inputCodUser, data).then(r => {
             window.location.href = `${base}/admin/usuarios`
         }).catch(e => console.log(e))
     }
 
     return (
         <Container className='mt-4'>
-                        <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Criar novo usuário</Modal.Title>
                 </Modal.Header>

@@ -4,7 +4,7 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
 import axios from '../../api/axios'
 
-const base = process.env.NODE_ENV==='production'?'https://forca-jogo.herokuapp.com':'https://forca-jogo.herokuapp.com'
+const base = process.env.NODE_ENV === 'production' ? 'https://forca-jogo.herokuapp.com' : 'https://forca-jogo.herokuapp.com'
 
 const UserModal = () => {
     const [show, setShow] = useState(false);
@@ -29,21 +29,27 @@ const UserModal = () => {
     }
 
     const onChangeUser = e => {
-        setInputUser(e.target.value.trim())
+        // setInputWord(e.target.value.toUpperCase())
+        var filter_nome = /^([A-Z\d.]|\s+)+$/;
+
+        // setLetter(e.target.value.toUpperCase())
+        if (filter_nome.test(e.target.value.toUpperCase())) {
+            setInputUser(e.target.value.toLowerCase().replace("[A-Zd.]+", "").trim())
+        }
     }
 
     const onChangePassword = e => {
         setInputPassword(e.target.value.trim())
     }
 
-    const handleCreate = async function(e) {
+    const handleCreate = async function (e) {
         e.preventDefault()
 
         if (!inputUsername || !inputUser || !inputPassword) return
 
         const user = await axios.get(`/users/get-user-name/?usuario=${inputUser.trim()}`)
 
-        if(user.data.user && user.data.user.nome_usuario){
+        if (user.data.user && user.data.user.nome_usuario) {
             setTextAlert("Usuário já cadastrado.")
             setShowAlert(true)
             return
@@ -56,7 +62,7 @@ const UserModal = () => {
         }
 
         axios.post('/users/new-user', data).then(r => {
-            window.location.href=`${base}/admin/usuarios`
+            window.location.href = `${base}/admin/usuarios`
         }).catch(e => console.log(e))
     }
 
@@ -70,7 +76,7 @@ const UserModal = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>    
+                        <Alert show={showAlert} variant="danger">{textAlert}</Alert>
                         <Form.Group controlId="formBasiUsername">
                             <Form.Label>Nome do usuário</Form.Label>
                             <Form.Control onChange={onChangeUsername} required type="text" placeholder="Leonardo Gomes Assunção" />
@@ -78,7 +84,7 @@ const UserModal = () => {
 
                         <Form.Group controlId="formBasicUser">
                             <Form.Label>Usuário</Form.Label>
-                            <Form.Control onChange={onChangeUser} required type="text" placeholder="leonardo.assuncao1513" />
+                            <Form.Control onChange={onChangeUser} value={inputUser} required type="text" placeholder="leonardo.assuncao1513" />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
