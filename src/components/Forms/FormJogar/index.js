@@ -43,8 +43,7 @@ const FormJogar = () => {
             <Form.Group controlId="formBasicCategory">
                 <Form.Label>Categoria</Form.Label>
                 <Form.Control as="select" size="small" onChange={e => setCategoryInput(e.target.value)}>
-                    <option value={0}>Selecione...</ option>
-                    <option value="-1">TODAS</ option>
+                    <option selected value="-1">TODAS</ option>
                     {categories && categories.map(c => {
                         return (
                             <option key={c.pk_cod_categoria} value={c.pk_cod_categoria} >{c.nome_categoria}</ option>
@@ -57,8 +56,7 @@ const FormJogar = () => {
             <Form.Group controlId="formBasicDificult">
                 <Form.Label>Dificuldade</Form.Label>
                 <Form.Control as="select" size="small" onChange={e => setDificultInput(e.target.value)}>
-                    <option value={0}>Selecione...</ option>
-                    <option value='1' >Fácil</ option>
+                    <option selected value='1' >Fácil</ option>
                     <option value='2' >Médio</ option>
                     <option value='3' >Difícil</ option>
                 </Form.Control>
@@ -69,7 +67,7 @@ const FormJogar = () => {
                     setShowCanvasGame(true)
                     setCategory(categoryInput)
                     setDificult(dificultInput)
-                }} variant="primary" disabled={!next} size="lg" block>Jogar</Button>
+                }} variant="primary" size="lg" block>Jogar</Button>
             </Form.Group>
         </div>
     )
