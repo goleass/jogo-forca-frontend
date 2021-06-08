@@ -267,7 +267,7 @@ const Canvas = () => {
 
                         <Form.Group>
                             <Button onClick={() => window.location.href = `${base}`} variant="secondary" className='mr-2'>Sair</Button>
-                            <Button onClick={() => backAndSetRanking()}>Salvar</Button>
+                            <Button disabled={!nameRanking || !nameRanking.trim()} onClick={() => backAndSetRanking()}>Salvar</Button>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

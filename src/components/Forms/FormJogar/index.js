@@ -27,13 +27,10 @@ const FormJogar = () => {
     }
 
     useEffect(() => {
+        setCategoryInput("-1")
+        setDificultInput("1")
         getCategories()
     }, [])
-
-    useEffect(() => {
-        if (categoryInput && categoryInput != 0 && dificultInput && dificultInput != 0) { setNext(true) }
-        else setNext(false)
-    }, [categoryInput, dificultInput])
 
     return (
         <div className='jogo-container-form p-2 mt-lg-5'>
