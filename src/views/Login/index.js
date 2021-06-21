@@ -45,7 +45,7 @@ const Login = () => {
                 <Form.Group>
                     <h2 className="mt-5">Login</h2>
                     <Form.Control onChange={handleUser} value={user} placeholder="usuário" className=""/>
-                    <Form.Control onChange={handlePass} value={pass} placeholder="senha" className="mt-2"/>
+                    <Form.Control onChange={handlePass} value={pass} type="password" placeholder="senha" className="mt-2"/>
                     <Button disabled={!user || !pass} onClick={() => handleSubmit()} block className="mt-2">login</Button>
                     <Alert className="mt-2" show={show} variant="danger">Usuário ou senha incorretos.</Alert>
                 </Form.Group>
